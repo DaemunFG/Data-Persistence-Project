@@ -12,6 +12,7 @@ public class MainManager : MonoBehaviour
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
+    public Text BestScoreText;
 
     public Text ScoreText;
     public GameObject GameOverText;
@@ -34,6 +35,7 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        BestScoreText.text = $"Best Score : {MyManager.Instance.BestName} Scored : {MyManager.Instance.BestScore}";
         ScoreText.text = $"{MyManager.Instance.ActivePlayerName.text}'s Score : {m_Points}";
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -86,6 +88,8 @@ public class MainManager : MonoBehaviour
         {
             if (m_LaunchAction.WasPressedThisFrame()) // MIGRATED: was Input.GetKeyDown(KeyCode.Space)
             {
+                MyManager.Instance.LoadBestScore();
+
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
@@ -94,7 +98,13 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-
+        if (m_Points > MyManager.Instance.BestScore)
+        {
+            MyManager.Instance.BestScore = m_Points;
+            MyManager.Instance.BestName = MyManager.Instance.ActivePlayerName.text;
+            MyManager.Instance.SaveBestScore();
+        }
+        
         ScoreText.text = $"{MyManager.Instance.ActivePlayerName.text}'s Score : {m_Points}";
     }
 

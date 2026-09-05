@@ -49,8 +49,8 @@ public class MyManager : MonoBehaviour
     public void SaveBestScore()
     {
         BSData data = new BSData();
-        data.BestScore = 0;
-        data.BestName = "Name";
+        data.BestScore = BestScore;
+        data.BestName = BestName;
 
         string json = JsonUtility.ToJson(data);
 
@@ -67,6 +67,7 @@ public class MyManager : MonoBehaviour
             BSData data = JsonUtility.FromJson<BSData>(json);
 
             BestName = data.BestName;
+            BestScore = data.BestScore;
         }
     }
 }

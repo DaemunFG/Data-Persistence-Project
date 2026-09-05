@@ -26,7 +26,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void PlayGame()
     {
-        GameObject.Find("BestScoreText").transform.position = new Vector3(1275, 1500);
+        GameObject.Find("BestScoreText").SetActive(false);
         GameObject.Find("TitleText").SetActive(false);
         GameObject.Find("PlayButton").SetActive(false);
         GameObject.Find("NameEntry").SetActive(false);
