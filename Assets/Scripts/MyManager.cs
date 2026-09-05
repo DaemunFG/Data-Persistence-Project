@@ -1,9 +1,13 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MyManager : MonoBehaviour
 {
     public static MyManager Instance;
+
+    public string BestName;
+    public int BestScore;
 
     public Text ActivePlayerName;
 
@@ -17,6 +21,9 @@ public class MyManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        
+        LoadBestScore();
         
     }
 
@@ -30,5 +37,36 @@ public class MyManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    [System.Serializable]
+    class BSData
+    {
+        public int BestScore;
+        public string BestName;
+    }
+
+    public void SaveBestScore()
+    {
+        BSData data = new BSData();
+        data.BestScore = 0;
+        data.BestName = "Name";
+
+        string json = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+
+    }
+
+    public void LoadBestScore()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            BSData data = JsonUtility.FromJson<BSData>(json);
+
+            BestName = data.BestName;
+        }
     }
 }
